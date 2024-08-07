@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       title: "ToDo",
       theme:
           ThemeData(primarySwatch: Colors.indigo, primaryColor: Colors.indigo),
-      home: SignupScreen(),
+      home: LoginScreen(),
     );
   }
 }
