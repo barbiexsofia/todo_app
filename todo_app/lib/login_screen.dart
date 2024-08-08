@@ -110,7 +110,7 @@ class LoginScreen extends StatelessWidget {
                       ));
                 },
                 child: const Text(
-                  "Sign up",
+                  "Create account",
                   style: TextStyle(fontSize: 18),
                 ),
               )

@@ -57,7 +57,7 @@ class SignupScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(
-                controller: _emailController,
+                controller: _passController,
                 style: const TextStyle(
                   color: Colors.white,
                 ),
