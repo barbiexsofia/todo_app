@@ -17,6 +17,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: "ToDo",
       theme:
           ThemeData(primarySwatch: Colors.indigo, primaryColor: Colors.indigo),
-      home: _auth.currentUser != null ? HomeScreen() : SignupScreen(),
+      home: _auth.currentUser != null ? const HomeScreen() : LoginScreen(),
     );
   }
 }

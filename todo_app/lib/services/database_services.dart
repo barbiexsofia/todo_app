@@ -9,7 +9,7 @@ class DatabaseService {
   User? user = FirebaseAuth.instance.currentUser;
 
   // Add todo task
-  Future<DocumentReference> addTodoItem(
+  Future<DocumentReference> addTodoTask(
       String title, String description) async {
     return await todoCollection.add({
       'uid': user!.uid,
@@ -36,7 +36,7 @@ class DatabaseService {
   }
 
   // Delete todo task
-  Future<void> deleteTodoStatus(String id) async {
+  Future<void> deleteTodoTask(String id) async {
     return await todoCollection.doc(id).delete();
   }
 

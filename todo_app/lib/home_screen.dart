@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/login_screen.dart';
 import 'package:todo_app/services/auth_services.dart';
+import 'package:todo_app/widgets/completed_widget.dart';
+import 'package:todo_app/widgets/pending_widget.dart';
+import 'package:todo_app/widgets/showTaskDialogue.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,26 +17,27 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final _widgets = [
     // Pending task Widget
-    Container(),
-    Container(),
+    const PendingWidget(),
+    const CompletedWidget(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF1d2630),
+      backgroundColor: const Color(0xFF1d2630),
       appBar: AppBar(
-        backgroundColor: Color(0xFF1d2630),
+        backgroundColor: const Color(0xFF1d2630),
         foregroundColor: Colors.white,
         title: const Text("ToDo"),
         actions: [
           IconButton(
             onPressed: () async {
               await AuthService().signOut();
+              if (!context.mounted) return;
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => LoginScreen()));
             },
-            icon: Icon(Icons.exit_to_app),
+            icon: const Icon(Icons.exit_to_app),
           )
         ],
       ),
@@ -48,9 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
+                  borderRadius: BorderRadius.circular(10),
                   onTap: () {
                     setState(() {
-                      _buttonIndex = 0;
+                      _buttonIndex = 1;
                     });
                   },
                   child: Container(
@@ -74,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 InkWell(
+                  borderRadius: BorderRadius.circular(10),
                   onTap: () {
                     setState(() {
                       _buttonIndex = 0;
@@ -101,8 +107,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
+            const SizedBox(height: 30),
+            _widgets[_buttonIndex],
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        child: const Icon(Icons.add),
+        onPressed: () {
+          showTaskDialog(context);
+        },
       ),
     );
   }
