@@ -43,7 +43,7 @@ class _CompletedWidgetState extends State<CompletedWidget> {
               return Container(
                 margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.white54,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Slidable(
@@ -68,9 +68,15 @@ class _CompletedWidgetState extends State<CompletedWidget> {
                       todo.title,
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
+                        decoration: TextDecoration.lineThrough,
                       ),
                     ),
-                    subtitle: Text(todo.description),
+                    subtitle: Text(
+                      todo.description,
+                      style: TextStyle(
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
                     trailing: Text(
                       '${dt.day}/${dt.month}/${dt.year}',
                       style: const TextStyle(fontWeight: FontWeight.bold),

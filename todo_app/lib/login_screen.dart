@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/home_screen.dart';
 import 'package:todo_app/services/auth_services.dart';
+import 'package:todo_app/signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   final AuthService _auth = AuthService();
@@ -106,7 +107,7 @@ class LoginScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
+                        builder: (context) => SignupScreen(),
                       ));
                 },
                 child: const Text(
