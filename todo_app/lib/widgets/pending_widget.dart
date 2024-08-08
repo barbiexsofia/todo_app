@@ -6,14 +6,14 @@ import 'package:todo_app/widgets/showTaskDialogue.dart';
 
 import '../model/todo_model.dart';
 
-class CompletedWidget extends StatefulWidget {
-  const CompletedWidget({super.key});
+class PendingWidget extends StatefulWidget {
+  const PendingWidget({super.key});
 
   @override
-  State<CompletedWidget> createState() => _CompletedWidgetState();
+  State<PendingWidget> createState() => _PendingWidgetState();
 }
 
-class _CompletedWidgetState extends State<CompletedWidget> {
+class _PendingWidgetState extends State<PendingWidget> {
   User? user = FirebaseAuth.instance.currentUser;
   late String uid;
 
@@ -107,7 +107,8 @@ class _CompletedWidgetState extends State<CompletedWidget> {
             },
           );
         } else {
-          return const Center(child: CircularProgressIndicator(color: Colors.white));
+          return const Center(
+              child: CircularProgressIndicator(color: Colors.white));
         }
       },
     );

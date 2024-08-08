@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(10),
                   onTap: () {
                     setState(() {
-                      _buttonIndex = 1;
+                      _buttonIndex = 0;
                     });
                   },
                   child: Container(
@@ -82,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(10),
                   onTap: () {
                     setState(() {
-                      _buttonIndex = 0;
+                      _buttonIndex = 1;
                     });
                   },
                   child: Container(
