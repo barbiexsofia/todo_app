@@ -4,12 +4,77 @@ import 'package:todo_app/home_screen.dart';
 import 'package:todo_app/services/auth_services.dart';
 import 'package:todo_app/signup_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final AuthService _auth = AuthService();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
 
-  LoginScreen({super.key});
+  String? _emailError;
+  String? _passwordError;
+  String? _databaseError;
+
+  void _validateAndSubmit() async {
+    setState(() {
+      _emailError = null;
+      _passwordError = null;
+    });
+
+    String email = _emailController.text.trim();
+    String password = _passController.text.trim();
+    bool isValid = true;
+
+    if (email.isEmpty) {
+      setState(() {
+        _emailError = 'Email cannot be empty';
+      });
+      isValid = false;
+    } else if (!email.contains('@')) {
+      setState(() {
+        _emailError = 'Invalid email address';
+      });
+      isValid = false;
+    }
+
+    if (password.isEmpty) {
+      setState(() {
+        _passwordError = 'Password cannot be empty';
+      });
+      isValid = false;
+    } else if (password.length < 6) {
+      setState(() {
+        _passwordError = 'Password must be at least 6 characters';
+      });
+      isValid = false;
+    }
+
+    if (isValid) {
+      dynamic result = await _auth.signInWithEmailAndPassword(email, password);
+      if (result is User) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      } else {
+        try {
+          // the returned Firebase error object has two keys: code and message.
+          setState(() {
+            _databaseError = result?.message;
+          });
+        } catch (e) {
+          // if the HTTP API call failed miserabily
+          print(e);
+          _databaseError = 'Please provide a valid email and password.';
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +111,16 @@ class LoginScreen extends StatelessWidget {
                   color: Colors.white,
                 ),
                 decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.white60),
-                    ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    labelText: "Email",
-                    labelStyle: const TextStyle(color: Colors.white60)),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Colors.white60),
+                  ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  labelText: "Email",
+                  labelStyle: const TextStyle(color: Colors.white60),
+                  errorText: _emailError, // Display error text if any
+                ),
               ),
               const SizedBox(height: 20),
               TextField(
@@ -63,30 +130,25 @@ class LoginScreen extends StatelessWidget {
                 ),
                 obscureText: true,
                 decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.white60),
-                    ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    labelText: "Password",
-                    labelStyle: const TextStyle(color: Colors.white60)),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Colors.white60),
+                  ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  labelText: "Password",
+                  labelStyle: const TextStyle(color: Colors.white60),
+                  errorText: _passwordError, // Display error text if any
+                ),
               ),
+              const SizedBox(height: 20.0),
+              Text(_databaseError!, style: const TextStyle(color: Colors.red)),
               const SizedBox(height: 50),
               SizedBox(
                 height: 50,
                 width: MediaQuery.of(context).size.width / 1.5,
                 child: ElevatedButton(
-                  onPressed: () async {
-                    User? user = await _auth.signInWithEmailAndPassword(
-                        _emailController.text, _passController.text);
-                    if (user != null) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeScreen()));
-                    }
-                  },
+                  onPressed: _validateAndSubmit,
                   child: const Text(
                     "Log in",
                     style: (TextStyle(
@@ -114,7 +176,7 @@ class LoginScreen extends StatelessWidget {
                   "Create account",
                   style: TextStyle(fontSize: 18),
                 ),
-              )
+              ),
             ],
           ),
         ),

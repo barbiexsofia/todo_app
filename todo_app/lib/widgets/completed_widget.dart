@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_app/services/database_services.dart';
-import 'package:todo_app/widgets/showTaskDialogue.dart';
 
 import '../model/todo_model.dart';
 
@@ -21,7 +20,6 @@ class _CompletedWidgetState extends State<CompletedWidget> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     uid = FirebaseAuth.instance.currentUser!.uid;
   }
@@ -51,11 +49,19 @@ class _CompletedWidgetState extends State<CompletedWidget> {
                   endActionPane: ActionPane(
                     motion: const DrawerMotion(),
                     children: [
-                      SlidableAction(
+                      CustomSlidableAction(
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,
-                        icon: Icons.delete,
-                        label: "Delete",
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.delete),
+                            Text(
+                              "Delete",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
                         //borderRadius: BorderRadius.circular(10),
                         onPressed: (context) async {
                           await _databaseService.deleteTodoTask(todo.id);
@@ -73,7 +79,7 @@ class _CompletedWidgetState extends State<CompletedWidget> {
                     ),
                     subtitle: Text(
                       todo.description,
-                      style: TextStyle(
+                      style: const TextStyle(
                         decoration: TextDecoration.lineThrough,
                       ),
                     ),

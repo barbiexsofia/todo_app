@@ -21,7 +21,6 @@ class _PendingWidgetState extends State<PendingWidget> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     uid = FirebaseAuth.instance.currentUser!.uid;
   }
@@ -51,38 +50,58 @@ class _PendingWidgetState extends State<PendingWidget> {
                   endActionPane: ActionPane(
                     motion: const DrawerMotion(),
                     children: [
-                      SlidableAction(
+                      CustomSlidableAction(
                         backgroundColor: Colors.green,
                         foregroundColor: Colors.white,
-                        icon: Icons.done,
-                        label: "Mark as done",
-
-                        //borderRadius: BorderRadius.circular(10),
-                        onPressed: (context) {
-                          _databaseService.updateTodoStatus(todo.id, true);
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.done),
+                            Text(
+                              "Mark as done",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                        onPressed: (context) async {
+                          await _databaseService.deleteTodoTask(todo.id);
                         },
-                      )
+                      ),
                     ],
                   ),
                   startActionPane: ActionPane(
                     motion: const DrawerMotion(),
                     children: [
-                      SlidableAction(
+                      CustomSlidableAction(
                         backgroundColor: Colors.amber,
                         foregroundColor: Colors.white,
-                        icon: Icons.edit,
-                        label: "Edit",
-                        //borderRadius: BorderRadius.circular(10),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.edit),
+                            Text(
+                              "Edit",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
                         onPressed: (context) {
                           showTaskDialog(context, todo: todo);
                         },
                       ),
-                      SlidableAction(
+                      CustomSlidableAction(
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,
-                        icon: Icons.delete,
-                        label: "Delete",
-                        //borderRadius: BorderRadius.circular(10),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.delete),
+                            Text(
+                              "Delete",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
                         onPressed: (context) async {
                           await _databaseService.deleteTodoTask(todo.id);
                         },

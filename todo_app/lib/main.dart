@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:todo_app/home_screen.dart';
 import 'package:todo_app/login_screen.dart';
-import 'package:todo_app/signup_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {
