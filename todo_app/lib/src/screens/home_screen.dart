@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/login_screen.dart';
-import 'package:todo_app/services/auth_services.dart';
-import 'package:todo_app/widgets/completed_widget.dart';
-import 'package:todo_app/widgets/pending_widget.dart';
-import 'package:todo_app/widgets/showTaskDialogue.dart';
+import 'package:todo_app/src/screens/login_screen.dart';
+import 'package:todo_app/src/services/auth_service.dart';
+import 'package:todo_app/src/widgets/completed_widget.dart';
+import 'package:todo_app/src/widgets/pending_widget.dart';
+import 'package:todo_app/src/widgets/showTaskDialogue.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

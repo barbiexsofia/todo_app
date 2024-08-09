@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/model/todo_model.dart';
-import 'package:todo_app/services/database_services.dart';
+import 'package:todo_app/src/models/todo_model.dart';
+import 'package:todo_app/src/services/database_service.dart';
 
 void showTaskDialog(BuildContext context, {Todo? todo}) {
   final TextEditingController titleController =
@@ -62,8 +62,8 @@ void showTaskDialog(BuildContext context, {Todo? todo}) {
                 await databaseService.addTodoTask(
                     titleController.text, descriptionController.text);
               } else {
-                await databaseService.updateTodo(todo.id,
-                    titleController.text, descriptionController.text);
+                await databaseService.updateTodo(
+                    todo.id, titleController.text, descriptionController.text);
               }
               if (!context.mounted) return;
               Navigator.pop(context);

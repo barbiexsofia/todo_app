@@ -1,19 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo_app/services/database_services.dart';
-import 'package:todo_app/widgets/showTaskDialogue.dart';
+import 'package:todo_app/src/services/database_service.dart';
 
-import '../model/todo_model.dart';
+import '../models/todo_model.dart';
 
-class PendingWidget extends StatefulWidget {
-  const PendingWidget({super.key});
+class CompletedWidget extends StatefulWidget {
+  const CompletedWidget({super.key});
 
   @override
-  State<PendingWidget> createState() => _PendingWidgetState();
+  State<CompletedWidget> createState() => _CompletedWidgetState();
 }
 
-class _PendingWidgetState extends State<PendingWidget> {
+class _CompletedWidgetState extends State<CompletedWidget> {
   User? user = FirebaseAuth.instance.currentUser;
   late String uid;
 
@@ -28,7 +27,7 @@ class _PendingWidgetState extends State<PendingWidget> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Todo>>(
-      stream: _databaseService.todos,
+      stream: _databaseService.completedTodos,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Todo> todos = snapshot.data!;
@@ -42,7 +41,7 @@ class _PendingWidgetState extends State<PendingWidget> {
               return Container(
                 margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.white54,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Slidable(
@@ -50,45 +49,6 @@ class _PendingWidgetState extends State<PendingWidget> {
                   endActionPane: ActionPane(
                     motion: const DrawerMotion(),
                     children: [
-                      CustomSlidableAction(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.done),
-                            Text(
-                              "Mark as done",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ],
-                        ),
-                        onPressed: (context) async {
-                          await _databaseService.deleteTodoTask(todo.id);
-                        },
-                      ),
-                    ],
-                  ),
-                  startActionPane: ActionPane(
-                    motion: const DrawerMotion(),
-                    children: [
-                      CustomSlidableAction(
-                        backgroundColor: Colors.amber,
-                        foregroundColor: Colors.white,
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.edit),
-                            Text(
-                              "Edit",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ],
-                        ),
-                        onPressed: (context) {
-                          showTaskDialog(context, todo: todo);
-                        },
-                      ),
                       CustomSlidableAction(
                         backgroundColor: Colors.red,
                         foregroundColor: Colors.white,
@@ -102,6 +62,7 @@ class _PendingWidgetState extends State<PendingWidget> {
                             ),
                           ],
                         ),
+                        //borderRadius: BorderRadius.circular(10),
                         onPressed: (context) async {
                           await _databaseService.deleteTodoTask(todo.id);
                         },
@@ -113,9 +74,15 @@ class _PendingWidgetState extends State<PendingWidget> {
                       todo.title,
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
+                        decoration: TextDecoration.lineThrough,
                       ),
                     ),
-                    subtitle: Text(todo.description),
+                    subtitle: Text(
+                      todo.description,
+                      style: const TextStyle(
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
                     trailing: Text(
                       '${dt.day}/${dt.month}/${dt.year}',
                       style: const TextStyle(fontWeight: FontWeight.bold),
