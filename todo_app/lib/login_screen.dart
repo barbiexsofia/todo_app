@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app/home_screen.dart';
 import 'package:todo_app/services/auth_services.dart';
 import 'package:todo_app/signup_screen.dart';
 
@@ -19,62 +17,6 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _emailError;
   String? _passwordError;
   String? _databaseError;
-
-  void _validateAndSubmit() async {
-    setState(() {
-      _emailError = null;
-      _passwordError = null;
-    });
-
-    String email = _emailController.text.trim();
-    String password = _passController.text.trim();
-    bool isValid = true;
-
-    if (email.isEmpty) {
-      setState(() {
-        _emailError = 'Email cannot be empty';
-      });
-      isValid = false;
-    } else if (!email.contains('@')) {
-      setState(() {
-        _emailError = 'Invalid email address';
-      });
-      isValid = false;
-    }
-
-    if (password.isEmpty) {
-      setState(() {
-        _passwordError = 'Password cannot be empty';
-      });
-      isValid = false;
-    } else if (password.length < 6) {
-      setState(() {
-        _passwordError = 'Password must be at least 6 characters';
-      });
-      isValid = false;
-    }
-
-    if (isValid) {
-      dynamic result = await _auth.signInWithEmailAndPassword(email, password);
-      if (result is User) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-        );
-      } else {
-        try {
-          // the returned Firebase error object has two keys: code and message.
-          setState(() {
-            _databaseError = result?.message;
-          });
-        } catch (e) {
-          // if the HTTP API call failed miserabily
-          print(e);
-          _databaseError = 'Please provide a valid email and password.';
-        }
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,13 +84,40 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 20.0),
-              Text(_databaseError!, style: const TextStyle(color: Colors.red)),
+              _databaseError != null
+                  ? Text(
+                      _databaseError!,
+                      style: const TextStyle(color: Colors.red),
+                    )
+                  : const SizedBox.shrink(),
               const SizedBox(height: 50),
               SizedBox(
                 height: 50,
                 width: MediaQuery.of(context).size.width / 1.5,
                 child: ElevatedButton(
-                  onPressed: _validateAndSubmit,
+                  onPressed: () {
+                    _auth.validateAndSubmit(
+                      isLogin: true,
+                      context: context,
+                      emailController: _emailController,
+                      passController: _passController,
+                      setEmailError: (error) {
+                        setState(() {
+                          _emailError = error;
+                        });
+                      },
+                      setPasswordError: (error) {
+                        setState(() {
+                          _passwordError = error;
+                        });
+                      },
+                      setDatabaseError: (error) {
+                        setState(() {
+                          _databaseError = error;
+                        });
+                      },
+                    );
+                  },
                   child: const Text(
                     "Log in",
                     style: (TextStyle(
