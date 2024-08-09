@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/src/screens/login_screen.dart';
+import 'package:todo_app/src/views/login_screen.dart';
 import 'package:todo_app/src/services/auth_service.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -139,7 +139,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
+                        builder: (context) => const LoginScreen(),
                       ));
                 },
                 child: const Text(

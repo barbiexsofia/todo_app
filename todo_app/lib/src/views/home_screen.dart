@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/src/screens/login_screen.dart';
+import 'package:todo_app/src/views/login_screen.dart';
 import 'package:todo_app/src/services/auth_service.dart';
 import 'package:todo_app/src/widgets/completed_widget.dart';
 import 'package:todo_app/src/widgets/pending_widget.dart';
