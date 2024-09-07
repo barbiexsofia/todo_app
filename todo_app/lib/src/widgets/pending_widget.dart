@@ -64,7 +64,8 @@ class _PendingWidgetState extends State<PendingWidget> {
                           ],
                         ),
                         onPressed: (context) async {
-                          await _databaseService.deleteTodoTask(todo.id);
+                          await _databaseService.updateTodoStatus(
+                              todo.id, true);
                         },
                       ),
                     ],
